@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 medicos = [
     {
@@ -102,6 +103,8 @@ compromissos = [
         "descrição": "Treinamento de software"
     }
 ]
+def validar_nome(nome):
+    return bool(re.match("^[a-zA-ZÀ-ú]+( [a-zA-ZÀ-ú]+)*$", nome))
 
 def validar_data(data_str):
     try:
@@ -163,150 +166,152 @@ def validar_telefone(telefone):
 def validar_descricao(descricao):
     return len(descricao.strip()) > 0
 
+def validar_rg(rg):
+    if len(rg) != 9 or not rg.isdigit():
+        return False
+    
+    return True
+
 def cadastrarMedicos():
-    print("Você quer cadastar um medico? Digite: S para sim e N para não.")
-    rm=input("")
-    if rm=="S":
-        print("Forneça o nome do médico")
-        nomem=input("")
-        print("Forneça o CPF do medico")
-        cpf= input("")
+    print("Você quer cadastrar um médico? Digite: S para sim e N para não.")
+    resposta = input("").upper()
+    if resposta == "S":
+        print("Forneça o nome do médico:")
+        nome = input("")
+        if not validar_nome(nome):
+            print("Nome inválido. Por favor, insira um nome válido.")
+            return
+        
+        print("Forneça o CPF do médico:")
+        cpf = input("")
         if not validar_cpf(cpf):
             print("CPF inválido. Por favor, insira um CPF válido.")
             return
         
-        print("Qual o RG do medico?")
-        rg= input("")
-        print("O CRM do medico")
-        crm= input("")
-        print("O telefone do medico")
-        tele= input("")
-        if not validar_telefone(tele):
+        print("Qual o RG do médico?")
+        rg = input("")
+        print("O CRM do médico:")
+        crm = input("")
+        print("O telefone do médico:")
+        telefone = input("")
+        if not validar_telefone(telefone):
             print("Telefone inválido. Por favor, insira um telefone válido.")
             return
         
-        print("O endereço do medico")
-        ende= input("")
-        print("O senha do medico")
-        senha= input("")
-        print("O sexo do medico")
-        exo=input("")
-        print("Deseja salvar as informaçoes? Digite: S para sim e N para não.")
-        q=input("")
-        if q == "S":
-            print("Sucesso")
-            medicos.append({"nome": nomem,
-                     "cpf": cpf,
-                     "rg": rg,
-                     "crm": crm,
-                    "telefone": tele,
-                    "endereco": ende,
-                    "sexo": exo,
-                    "senha": senha})
+        print("O endereço do médico:")
+        endereco = input("")
+        print("A senha do médico:")
+        senha = input("")
+        print("O sexo do médico:")
+        sexo = input("")
+        print("Deseja salvar as informações? Digite: S para sim e N para não.")
+        salvar = input("").upper()
+        if salvar == "S":
+            print("Sucesso!")
+            medicos.append({
+                "nome": nome,
+                "cpf": cpf,
+                "rg": rg,
+                "crm": crm,
+                "telefone": telefone,
+                "endereco": endereco,
+                "sexo": sexo,
+                "senha": senha
+            })
             print(medicos)
         else:
-            print("Programa cancelado!")
-            breakpoint
+            print("Operação cancelada!")
     else:
-        print("Programa cancelado!")
-        breakpoint
-     
+        print("Operação cancelada!")
+
 def cadastrarPacientes():
- 
-    print("Você quer cadastar um paciente? Digite: S para sim e N para não.")
-    rp=input("")
-    if rp=="S":
-     print("Forneça o nome do paciente")
-     nomep= input("")
-     print("O endereço do paciente")
-     endep= input("")
-     print("O telefone do paciente")
-     telep= input("")
-     if not validar_telefone(telep):
-         print("Telefone inválido. Por favor, insira um telefone válido.")
-         return
-     
-     print("O CPF do paciente")
-     cpfp= input("")
-     if not validar_cpf(cpfp):
-         print("CPF inválido. Por favor, insira um CPF válido.")
-         return
-     
-     print("Qual o RG do paciente?")
-     rgp= input("")
-     print("O sexo do paciente")
-     sexop= input("")
-     print("Informe o convenio do paciente")
-     convp = input("")
-     print("Deseja salvar as informaçoes? Digite: S para sim e N para não.")
-     b=input()
-     if b == "S":
-         print("Sucesso!")
-         pacis.append({
- 
-             "nome": nomep,
-             "endereco": endep,
-             "telefone": telep,
-             "cpf": cpfp,
-             "rg": rgp,
-             "sexo": sexop,
-             "convenio": convp
-         })
-         print(pacis)
-     
-     else:
-        print("Programa cancelado!")
-        breakpoint
+    print("Você quer cadastrar um paciente? Digite: S para sim e N para não.")
+    resposta = input("").upper()
+    if resposta == "S":
+        print("Forneça o nome do paciente:")
+        nome = input("")
+        print("O endereço do paciente:")
+        endereco = input("")
+        print("O telefone do paciente:")
+        telefone = input("")
+        if not validar_telefone(telefone):
+            print("Telefone inválido. Por favor, insira um telefone válido.")
+            return
+        
+        print("O CPF do paciente:")
+        cpf = input("")
+        if not validar_cpf(cpf):
+            print("CPF inválido. Por favor, insira um CPF válido.")
+            return
+        
+        print("Qual o RG do paciente?")
+        rg = input("")
+        print("O sexo do paciente:")
+        sexo = input("")
+        print("Informe o convênio do paciente:")
+        convenio = input("")
+        print("Deseja salvar as informações? Digite: S para sim e N para não.")
+        salvar = input("").upper()
+        if salvar == "S":
+            print("Sucesso!")
+            pacis.append({
+                "nome": nome,
+                "endereco": endereco,
+                "telefone": telefone,
+                "cpf": cpf,
+                "rg": rg,
+                "sexo": sexo,
+                "convenio": convenio
+            })
+            print(pacis)
+        else:
+            print("Operação cancelada!")
     else:
-       print("Programa cancelado!")
-       breakpoint
-    
+        print("Operação cancelada!")
+
 def cadastrarConvenios():
-  
-    print("Você quer cadastar um convênio? Digite: S para sim e N para não.)")
-    rc=input("")
-    if rc=="S":
-     print("Forneça o nome do convênio")
-     nomec= input("")
-     print("O seu telefone para contato")
-     telec= input("")
-     if not validar_telefone(telec):
-         print("Telefone inválido. Por favor, insira um telefone válido.")
-         return
-     
-     print("O seu endereço")
-     endec= input("")
-     print("O CPF do convênio")
-     cpfc= input("")
-     if not validar_cpf(cpfc):
-         print("CPF inválido. Por favor, insira um CPF válido.")
-         return
-     
-     planos = input("")
-     print("Deseja salvar as informaçoes? Digite: S para sim e N para não.")
-     c=input()
-     if c == "S":
-         print("Sucesso!")
-         convenios.append({
- 
-             "nome": nomec,
-             "endereco": endec,
-             "telefone": telec,
-             "palnos": planos
-         })
-         print(convenios)
-     else:
-        print("Programa cancelado!")
-        breakpoint
+    print("Você quer cadastrar um convênio? Digite: S para sim e N para não.")
+    resposta = input("").upper()
+    if resposta == "S":
+        print("Forneça o nome do convênio:")
+        nome = input("")
+        print("O telefone para contato:")
+        telefone = input("")
+        if not validar_telefone(telefone):
+            print("Telefone inválido. Por favor, insira um telefone válido.")
+            return
+        
+        print("O endereço do convênio:")
+        endereco = input("")
+        print("O CNPJ do convênio:")
+        cnpj = input("")
+        if not validar_cpf(cnpj):
+            print("CNPJ inválido. Por favor, insira um CNPJ válido.")
+            return
+        
+        print("Informe os planos do convênio:")
+        planos = input("")
+        print("Deseja salvar as informações? Digite: S para sim e N para não.")
+        salvar = input("").upper()
+        if salvar == "S":
+            print("Sucesso!")
+            convenios.append({
+                "nome": nome,
+                "endereco": endereco,
+                "telefone": telefone,
+                "cnpj": cnpj,
+                "planos": planos
+            })
+            print(convenios)
+        else:
+            print("Operação cancelada!")
     else:
-       print("Programa cancelado!")
-       breakpoint
+        print("Operação cancelada!")
 
 def buscarMedicos():
-
-    print("Informe o nome ou CRM do médico")
+    print("Informe o nome ou CRM do médico:")
     busm = input("")
-    resultados = [medico for medico in medicos if busm in medico['nome'] or busm in medico['crm']]
+    resultados = [medico for medico in medicos if busm.lower() == medico.get('nome', '').lower() or busm == medico.get('crm', '')]
     if resultados:
         for resultado in resultados:
             print(f"Nome: {resultado['nome']}, Telefone: {resultado['telefone']}, CRM: {resultado['crm']}")
@@ -314,21 +319,19 @@ def buscarMedicos():
         print("Nenhum médico encontrado.")
 
 def buscarPacientes():
-
     print("Informe o nome ou CPF do paciente:")
     busp = input("")
-    resuls = [paciente for paciente in pacis if busp in paciente['nome'] or busp in paciente['cpf']]
-    if resuls:
-        for resultado in resuls:
+    resultados = [paciente for paciente in pacis if busp.lower() == paciente.get('nome', '').lower() or busp == paciente.get('cpf', '')]
+    if resultados:
+        for resultado in resultados:
             print(f"Nome: {resultado['nome']}, Telefone: {resultado['telefone']}, CPF: {resultado['cpf']}")
     else:
         print("Nenhum paciente encontrado.")
 
 def buscarConvenios():
-  
-    print("Informe o nome ou CNPJ do convênio")
+    print("Informe o nome ou CNPJ do convênio:")
     busc = input("")
-    resultados = [convenio for convenio in convenios if busc in convenio['nome'] or busc in convenio['cnpj']]
+    resultados = [convenio for convenio in convenios if busc.lower() == convenio.get('nome', '').lower() or busc == convenio.get('cnpj', '')]
     if resultados:
         for resultado in resultados:
             print(f"Nome: {resultado['nome']}, Telefone: {resultado['telefone']}, CNPJ: {resultado['cnpj']}")
