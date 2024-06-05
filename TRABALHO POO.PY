@@ -1,3 +1,5 @@
+from datetime import datetime
+
 medicos = [
     {
         "nome": "Adalberto",
@@ -57,7 +59,7 @@ convenios = [
     }
 ]
 
-agenda = [
+consultas = [
     {   
         "medico": "Dr. Adalberto",
         "paciente":"Sara V.",
@@ -83,6 +85,21 @@ agenda = [
         "hora inicial" : "2:00",
         "hora final" : "3:00",
         "descrição" : "consulta da cabeça"
+    }
+]
+
+compromissos = [
+    {
+        "data": "16/09/2024",
+        "hora inicial": "10:00",
+        "hora final": "11:00",
+        "descrição": "Reunião com equipe"
+    },
+    {
+        "data": "17/09/2024",
+        "hora inicial": "14:00",
+        "hora final": "15:00",
+        "descrição": "Treinamento de software"
     }
 ]
 
@@ -290,90 +307,132 @@ def alterarPacientes():
     else:
         print("Paciente não encontrado.")
 
+def validar_data(data_str):
+    try:
+        datetime.strptime(data_str, '%d/%m/%Y')
+        return True
+    except ValueError:
+        return False
+    
 def marcarCompromisso():
-  
-  print("Você deseja marcar um compromisso?")
-  com=input("")
-  if com=="sim":
-      print("Informe a data que você deseja (formato: DD/MM/AAAA):")
-      data=input("")
-      print("Informe a hora que você deseja iniciar sua consulta (formato: HH:MM - HH:MM):")
-      hi=input("")
-      print("Informe a hora que você deseja finalizar sua consulta (formato: HH:MM - HH:MM):")
-      hf=input("")
-      print("Descreva o seu compromisso")
-      desc=input("")
-      print("Você deseja salvar essas informações?")
-      rc=input("")
-      print(f"Seu compromisso foi agendado confira os dados: {agenda}")
-  else:
-      print("Programa Encerrado")
-      breakpoint
-  
+    print("Você deseja marcar um compromisso? (sim/não)")
+    com = input("")
+    if com.lower() == "sim":
+        data = input("Informe a data do compromisso (formato DD/MM/AAAA): ")
+        if not validar_data(data):
+            print("Data inválida. Encerrando o programa.")
+            return
+        
+        hi = input("Informe a hora inicial do compromisso (formato HH:MM): ")
+        hf = input("Informe a hora final do compromisso (formato HH:MM): ")
+        desc = input("Descreva o seu compromisso: ")
+        
+        compromissos.append({
+            "data": data,
+            "hora inicial": hi,
+            "hora final": hf,
+            "descrição": desc
+        })
+        print("Compromisso marcado com sucesso!")
+        print(f"Seu compromisso foi agendado com os seguintes dados: {compromissos[-1]}")
+    else:
+        print("Programa cancelado!")
+
 def marcarConsulta():
-    print("Você quer marcar uma consulta?")
+    print("Você quer marcar uma consulta? (sim/não)")
     mc = input("")
-    if mc == "sim":
-        print("Informe o nome do médico:")
-        nm = input("")
+    if mc.lower() == "sim":
+        nm = input("Informe o nome do médico: ")
         mencontrado = next((medico for medico in medicos if medico['nome'] == nm), None)
         if mencontrado:
-            print("Informe o nome do paciente:")
-            pnome = input("")
+            pnome = input("Informe o nome do paciente: ")
             pencontrado = next((paciente for paciente in pacis if paciente['nome'] == pnome), None)
             if pencontrado:
-                print("Informe a data da consulta (formato: DD/MM/AAAA):")
-                data = input("")
-                print("Informe o horário da consulta (formato: HH:MM - HH:MM):")
-                horario = input("")
-                print("Consulta marcada com sucesso!")
-                agenda.append({
+                data = input("Informe a data da consulta (formato DD/MM/AAAA): ")
+                if not validar_data(data):
+                    print("Data inválida. Encerrando o programa.")
+                    return
+                
+                hi = input("Informe a hora inicial da consulta (formato HH:MM): ")
+                hf = input("Informe a hora final da consulta (formato HH:MM): ")
+                desc = input("Descreva a consulta: ")
+                
+                consultas.append({
                     "data": data,
-                    "horario": horario,
+                    "hora inicial": hi,
+                    "hora final": hf,
                     "medico": nm,
-                    "paciente": pnome
+                    "paciente": pnome,
+                    "descrição": desc
                 })
+                print("Consulta marcada com sucesso!")
+                print(f"Os dados da consulta são: {consultas[-1]}")
             else:
                 print("Paciente não encontrado.")
         else:
             print("Médico não encontrado.")
     else:
-        print("Programa Cancelado.")
+        print("Programa cancelado!")
 
 def emitirRelatorio():
- print("Qual relatório você deseja emitir?")
- print("1 - Médicos cadastrados")
- print("2 - Pacientes cadastrados")
- print("3 - Convênios")
- print("4 - Consultas realizadas em um intervalo de data")
- 
- escolha = input("Escolha uma opção: ")
- if escolha == "1":
-     print("Médicos cadastrados:")
-     for medico in medicos:
-         print(f"Nome: {medico['nome']}, CPF: {medico['cpf']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
- elif escolha == "2":
-     print("Pacientes cadastrados:")
-     for paciente in pacis:
-         print(f"Nome: {paciente['nome']}, CPF: {paciente['cpf']}, Telefone: {paciente['telefone']}")
- elif escolha == "3":
-     print("Convênios:")
-     for convenio in convenios:
-         print(f"Nome: {convenio['nome']}, CNPJ: {convenio['cnpj']}, Telefone: {convenio['telefone']}")
- elif escolha == "4":
-     print("Informe a data de início (formato DD/MM/AAAA):")
-     data_inicio = input("")
-     data_fim = input("Informe a data de fim (formato DD/MM/AAAA): ")
-     print(f"Consultas de {data_inicio} a {data_fim}:")
-     for consulta in agenda:
-         data_consulta = consulta.get("data", "")
-         if data_inicio <= data_consulta <= data_fim:
-             print(f"Data: {consulta['data']}, Horário: {consulta.get('horario', consulta.get('hora inicial', ''))}-{consulta.get('hora final', '')}, Médico: {consulta.get('medico', '')}, Paciente: {consulta.get('paciente', '')}, Descrição: {consulta.get('descrição', '')}")
- else:
-     print("Opção inválida.")
+    print("Qual relatório você deseja emitir?")
+    print("1 - Médicos cadastrados")
+    print("2 - Pacientes cadastrados")
+    print("3 - Convênios")
+    print("4 - Consultas realizadas em um intervalo de data")
+    print("5 - Compromissos realizados em um intervalo de data")
+    
+    escolha = input("Escolha uma opção: ")
+    if escolha == "1":
+        print("Médicos cadastrados:")
+        for medico in medicos:
+            print(f"Nome: {medico['nome']}, CPF: {medico['cpf']}, CRM: {medico['crm']}, Telefone: {medico['telefone']}")
+    elif escolha == "2":
+        print("Pacientes cadastrados:")
+        for paciente in pacis:
+            print(f"Nome: {paciente['nome']}, CPF: {paciente['cpf']}, Telefone: {paciente['telefone']}")
+    elif escolha == "3":
+        print("Convênios:")
+        for convenio in convenios:
+            print(f"Nome: {convenio['nome']}, CNPJ: {convenio['cnpj']}, Telefone: {convenio['telefone']}")
+    elif escolha == "4":
+        data_inicio = input("Informe a data de início (formato DD/MM/AAAA): ")
+        if not validar_data(data_inicio):
+            print("Data de início inválida. Encerrando o programa.")
+            return
+        
+        data_fim = input("Informe a data de fim (formato DD/MM/AAAA): ")
+        if not validar_data(data_fim):
+            print("Data de fim inválida. Encerrando o programa.")
+            return
+        
+        print(f"Consultas de {data_inicio} a {data_fim}:")
+        for consulta in consultas:
+            data_consulta = consulta.get("data", "")
+            if data_inicio <= data_consulta <= data_fim:
+                print(f"Data: {consulta['data']}, Horário: {consulta['hora inicial']}-{consulta['hora final']}, Médico: {consulta['medico']}, Paciente: {consulta['paciente']}, Descrição: {consulta['descrição']}")
+    elif escolha == "5":
+        data_inicio = input("Informe a data de início (formato DD/MM/AAAA): ")
+        if not validar_data(data_inicio):
+            print("Data de início inválida. Por favor reinicie o encerre o programa.")
+            return
+        
+        data_fim = input("Informe a data de fim (formato DD/MM/AAAA): ")
+        if not validar_data(data_fim):
+            print("Data de fim inválida. Por favor reinicie o encerre o programa.")
+            return
+        
+        print(f"Compromissos de {data_inicio} a {data_fim}:")
+        for compromisso in compromissos:
+            data_compromisso = compromisso.get("data", "")
+            if data_inicio <= data_compromisso <= data_fim:
+                print(f"Data: {compromisso['data']}, Horário: {compromisso['hora inicial']}-{compromisso['hora final']}, Descrição: {compromisso['descrição']}")
+    else:
+        print("Opção inválida. Encerrando o programa.")
 
 a = True
 while a:
+   
    lang = input("1 - Cadastrar Médico\n"
                 "2 - Cadastrar Paciente\n"
                 "3 - Cadastrar Convênio\n"
@@ -388,11 +447,13 @@ while a:
                 "12 - Encerrar Programa\n"
                 "O que você deseja fazer?")
    match lang:
+       
     case "1":
         cadastrarMedicos()
         
     case "2":
         cadastrarPacientes()
+
     case "3": 
         cadastrarConvenios()
         
@@ -424,6 +485,4 @@ while a:
            a = False
         
     case _:
-           print("Escolha uma opção válida")
-          
-        
+           print("Escolha uma opção válida")     
