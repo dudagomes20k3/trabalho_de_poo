@@ -103,30 +103,97 @@ compromissos = [
     }
 ]
 
+def validar_data(data_str):
+    try:
+        datetime.strptime(data_str, '%d/%m/%Y')
+        return True
+    except ValueError:
+        return False
+    
+
+def validar_horario(horario_str):
+    try:
+        datetime.strptime(horario_str, '%H:%M')
+        return True
+    except ValueError:
+        return False
+
+def validar_cpf(cpf):
+    if len(cpf) != 11:
+        return False
+    if not cpf.isdigit():
+        return False
+    
+    soma = 0
+    for i in range(9):
+        soma += int(cpf[i]) * (10 - i)
+    digito_1 = 11 - (soma % 11)
+    if digito_1 > 9:
+        digito_1 = 0
+    
+    if int(cpf[9]) != digito_1:
+        return False
+    
+    soma = 0
+    for i in range(10):
+        soma += int(cpf[i]) * (11 - i)
+    digito_2 = 11 - (soma % 11)
+    if digito_2 > 9:
+        digito_2 = 0
+    
+    if int(cpf[10]) != digito_2:
+        return False
+    
+    return True
+
+def validar_telefone(telefone):
+    telefone = ''.join(filter(str.isdigit, telefone))
+    
+    if len(telefone) != 11:
+        return False
+    
+    if telefone[:2] != '0':
+        return False
+    
+    if telefone[2] != '9':
+        return False
+    
+    return True
+
+def validar_descricao(descricao):
+    return len(descricao.strip()) > 0
+
 def cadastrarMedicos():
-      #Aqui vai seu codigo 
-    print("Você quer cadastar um medico? (sim/não)")
+    print("Você quer cadastar um medico? Digite: S para sim e N para não.")
     rm=input("")
-    if rm=="sim":
+    if rm=="S":
         print("Forneça o nome do médico")
         nomem=input("")
         print("Forneça o CPF do medico")
         cpf= input("")
+        if not validar_cpf(cpf):
+            print("CPF inválido. Por favor, insira um CPF válido.")
+            return
+        
         print("Qual o RG do medico?")
         rg= input("")
         print("O CRM do medico")
         crm= input("")
         print("O telefone do medico")
         tele= input("")
+        if not validar_telefone(tele):
+            print("Telefone inválido. Por favor, insira um telefone válido.")
+            return
+        
         print("O endereço do medico")
         ende= input("")
         print("O senha do medico")
         senha= input("")
         print("O sexo do medico")
         exo=input("")
-        print("Deseja salvar as informaçoes? (S/N)")
-        q=input()
-        if q == "sim":
+        print("Deseja salvar as informaçoes? Digite: S para sim e N para não.")
+        q=input("")
+        if q == "S":
             print("Sucesso")
             medicos.append({"nome": nomem,
                      "cpf": cpf,
@@ -141,31 +208,39 @@ def cadastrarMedicos():
             print("Programa cancelado!")
             breakpoint
     else:
-      print("Programa cancelado!")
-      breakpoint
+        print("Programa cancelado!")
+        breakpoint
      
 def cadastrarPacientes():
  
-    print("Você quer cadastar um paciente? (sim/não)")
+    print("Você quer cadastar um paciente? Digite: S para sim e N para não.")
     rp=input("")
-    if rp=="sim":
+    if rp=="S":
      print("Forneça o nome do paciente")
      nomep= input("")
      print("O endereço do paciente")
      endep= input("")
      print("O telefone do paciente")
      telep= input("")
+     if not validar_telefone(telep):
+         print("Telefone inválido. Por favor, insira um telefone válido.")
+         return
+     
      print("O CPF do paciente")
      cpfp= input("")
+     if not validar_cpf(cpfp):
+         print("CPF inválido. Por favor, insira um CPF válido.")
+         return
+     
      print("Qual o RG do paciente?")
      rgp= input("")
      print("O sexo do paciente")
      sexop= input("")
      print("Informe o convenio do paciente")
      convp = input("")
-     print("Deseja salvar as informaçoes?(sim/não)")
+     print("Deseja salvar as informaçoes? Digite: S para sim e N para não.")
      b=input()
-     if b == "sim":
+     if b == "S":
          print("Sucesso!")
          pacis.append({
  
@@ -176,33 +251,41 @@ def cadastrarPacientes():
              "rg": rgp,
              "sexo": sexop,
              "convenio": convp
-     })
+         })
          print(pacis)
      
      else:
-            print("Programa cancelado!")
-            breakpoint
+        print("Programa cancelado!")
+        breakpoint
     else:
        print("Programa cancelado!")
        breakpoint
     
 def cadastrarConvenios():
   
-    print("Você quer cadastar um convênio? (sim/não)")
+    print("Você quer cadastar um convênio? Digite: S para sim e N para não.)")
     rc=input("")
-    if rc=="sim":
+    if rc=="S":
      print("Forneça o nome do convênio")
      nomec= input("")
      print("O seu telefone para contato")
      telec= input("")
+     if not validar_telefone(telec):
+         print("Telefone inválido. Por favor, insira um telefone válido.")
+         return
+     
      print("O seu endereço")
      endec= input("")
      print("O CPF do convênio")
      cpfc= input("")
+     if not validar_cpf(cpfc):
+         print("CPF inválido. Por favor, insira um CPF válido.")
+         return
+     
      planos = input("")
-     print("Deseja salvar as informaçoes?(sim/não)")
+     print("Deseja salvar as informaçoes? Digite: S para sim e N para não.")
      c=input()
-     if c == "sim":
+     if c == "S":
          print("Sucesso!")
          convenios.append({
  
@@ -210,11 +293,11 @@ def cadastrarConvenios():
              "endereco": endec,
              "telefone": telec,
              "palnos": planos
-     })
+         })
          print(convenios)
      else:
-            print("Programa cancelado!")
-            breakpoint
+        print("Programa cancelado!")
+        breakpoint
     else:
        print("Programa cancelado!")
        breakpoint
@@ -315,9 +398,9 @@ def validar_data(data_str):
         return False
     
 def marcarCompromisso():
-    print("Você deseja marcar um compromisso? (sim/não)")
+    print("Você deseja marcar um compromisso? Digite: S para sim E N para não.")
     com = input("")
-    if com.lower() == "sim":
+    if com.lower() == "S":
         data = input("Informe a data do compromisso (formato DD/MM/AAAA): ")
         if not validar_data(data):
             print("Data inválida. Encerrando o programa.")
