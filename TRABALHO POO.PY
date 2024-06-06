@@ -9,7 +9,7 @@ medicos = [
         "crm": "CRM1234",
         "telefone": "(88) 99999-1234",
         "endereco": "Rua A, 123, Belo Horizonte",
-        "sexo": "Feminino",
+        "sexo": "Masculino",
         "senha": "senha123"
     },
     {
@@ -30,7 +30,7 @@ pacis = [
         "rg": "MG111222",
         "telefone": "(31) 88888-1111",
         "endereco": "Rua C, 789, Belo Horizonte",
-        "sexo": "Masculino",
+        "sexo": "Feminino",
         "convenio": "ConvenioX"
     },
     {
@@ -180,7 +180,7 @@ def cadastrarMedicos():
             return
 
         print("O sexo:")
-        sexo = input("")
+        exo = input("")
         print("O CRM: ( Até 7 dígitos)")
         crm = input("")
         print("Informe uma senha para o médico:")
@@ -195,7 +195,7 @@ def cadastrarMedicos():
                 "rg": rg,
                 "telefone": telefone,
                 "endereco": endereco,
-                "sexo": sexo,
+                "sexo": exo,
                 "crm": crm,
                 "senha": senha
             })
@@ -207,58 +207,62 @@ def cadastrarMedicos():
 
 def cadastrarPacientes():
     print("Você quer cadastrar um paciente? Digite: S para sim e N para não.")
-    resposta = input("").upper()
-    if resposta == "S":
-        print("Forneça o nome do paciente (somente letras):")
-        nome = input("")
-        if not validar_nome(nome):
-            print("Nome inválido. Por favor, insira um nome válido.")
-            return
+    resposta = input().upper()
+    
+    if resposta != "S":
+        print("Operação cancelada!")
+        return
 
-        print("O CPF (11 dígitos numéricos):")
-        cpf = input("")
-        if not validar_cpf(cpf):
-            print("CPF inválido. Por favor, insira um CPF válido.")
-            return
+    print("Forneça o nome do paciente (somente letras):")
+    nome = input()
+    if not validar_nome(nome):
+        print("Nome inválido. Por favor, insira um nome válido.")
+        return
 
-        print("O RG (9 dígitos numéricos):")
-        rg = input("")
-        if not validar_rg(rg):
-            print("RG inválido. Por favor, insira um RG válido.")
-            return
+    print("Forneça o CPF (11 dígitos numéricos):")
+    cpf = input()
+    if not validar_cpf(cpf):
+        print("CPF inválido. Por favor, insira um CPF válido.")
+        return
 
-        print("O telefone (10 ou 11 dígitos numéricos):")
-        telefone = input("")
-        if not validar_telefone(telefone):
-            print("Telefone inválido. Por favor, insira um telefone válido.")
-            return
+    print("Forneça o RG (9 dígitos numéricos):")
+    rg = input()
+    if not validar_rg(rg):
+        print("RG inválido. Por favor, insira um RG válido.")
+        return
 
-        print("O endereço (letras, números e caracteres especiais - espaço, vírgula, ponto e hífen):")
-        endereco = input("")
-        if not validar_endereco(endereco):
-            print("Endereço inválido. Por favor, insira um endereço válido.")
-            return
+    print("Forneça o telefone (10 ou 11 dígitos numéricos):")
+    telefone = input()
+    if not validar_telefone(telefone):
+        print("Telefone inválido. Por favor, insira um telefone válido.")
+        return
 
-        print("O sexo:")
-        sexo = input("")
-        print("O convênio do paciente:")
-        convenio = input("")
-        print("Deseja salvar as informações? Digite: S para sim e N para não.")
-        salvar = input("").upper()
-        if salvar == "S":
-            print("Sucesso!")
-            pacis.append({
-                "nome": nome,
-                "cpf": cpf,
-                "rg": rg,
-                "telefone": telefone,
-                "endereco": endereco,
-                "sexo": sexo,
-                "convenio": convenio
-            })
-            print(pacis)
-        else:
-            print("Operação cancelada!")
+    print("Forneça o endereço (letras, números e caracteres especiais - espaço, vírgula, ponto e hífen):")
+    endereco = input()
+    if not validar_endereco(endereco):
+        print("Endereço inválido. Por favor, insira um endereço válido.")
+        return
+
+    print("Forneça o sexo do paciente:")
+    sexo = input()
+
+    print("Forneça o convênio do paciente:")
+    convenio = input()
+
+    print("Deseja salvar as informações? Digite: S para sim e N para não.")
+    salvar = input().upper()
+    if salvar == "S":
+        print("Sucesso! Informações salvas.")
+        pacis.append({
+            "nome": nome,
+            "cpf": cpf,
+            "rg": rg,
+            "telefone": telefone,
+            "endereco": endereco,
+            "sexo": sexo,
+            "convenio": convenio
+        })
+        print(pacis)
     else:
         print("Operação cancelada!")
 
