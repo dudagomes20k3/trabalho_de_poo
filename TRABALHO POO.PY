@@ -122,88 +122,63 @@ def validar_horario(horario_str):
         return False
 
 def validar_cpf(cpf):
-    if len(cpf) != 11:
-        return False
-    if not cpf.isdigit():
-        return False
-    
-    soma = 0
-    for i in range(9):
-        soma += int(cpf[i]) * (10 - i)
-    digito_1 = 11 - (soma % 11)
-    if digito_1 > 9:
-        digito_1 = 0
-    
-    if int(cpf[9]) != digito_1:
-        return False
-    
-    soma = 0
-    for i in range(10):
-        soma += int(cpf[i]) * (11 - i)
-    digito_2 = 11 - (soma % 11)
-    if digito_2 > 9:
-        digito_2 = 0
-    
-    if int(cpf[10]) != digito_2:
-        return False
-    
-    return True
+    return bool(re.match(r'^\d{11}$', cpf))
+
+def validar_cnpj(cnpj):
+    return bool(re.match(r'^\d{14}$', cnpj))
+
+def validar_endereco(endereco):
+    return bool(re.match(r'^[A-Za-z0-9\s,.-]+$', endereco))
 
 def validar_telefone(telefone):
-    telefone = ''.join(filter(str.isdigit, telefone))
-    
-    if len(telefone) != 11:
-        return False
-    
-    if telefone[:2] != '0':
-        return False
-    
-    if telefone[2] != '9':
-        return False
-    
-    return True
+    return bool(re.match(r'^\d{10,11}$', telefone))
 
 def validar_descricao(descricao):
     return len(descricao.strip()) > 0
 
 def validar_rg(rg):
-    if len(rg) != 9 or not rg.isdigit():
-        return False
-    
-    return True
+    return bool(re.match(r'^\d{9}$', rg))
 
 def cadastrarMedicos():
     print("Você quer cadastrar um médico? Digite: S para sim e N para não.")
     resposta = input("").upper()
     if resposta == "S":
-        print("Forneça o nome do médico:")
+        print("Forneça o nome do médico: (somente letras):")
         nome = input("")
         if not validar_nome(nome):
             print("Nome inválido. Por favor, insira um nome válido.")
             return
-        
-        print("Forneça o CPF do médico:")
+
+        print("Forneça o CPF do médico: (11 dígitos numéricos):")
         cpf = input("")
         if not validar_cpf(cpf):
             print("CPF inválido. Por favor, insira um CPF válido.")
             return
-        
-        print("Qual o RG do médico?")
+
+        print("Forneça o RG do médico: (9 dígitos numéricos):")
         rg = input("")
-        print("O CRM do médico:")
-        crm = input("")
-        print("O telefone do médico:")
+        if not validar_rg(rg):
+            print("RG inválido. Por favor, insira um RG válido.")
+            return
+
+        print("O telefone (10 ou 11 dígitos numéricos):")
         telefone = input("")
         if not validar_telefone(telefone):
             print("Telefone inválido. Por favor, insira um telefone válido.")
             return
-        
-        print("O endereço do médico:")
+
+        print("O endereço (letras, números e caracteres especiais - espaço, vírgula, ponto e hífen):")
         endereco = input("")
-        print("A senha do médico:")
-        senha = input("")
-        print("O sexo do médico:")
+        if not validar_endereco(endereco):
+            print("Endereço inválido. Por favor, insira um endereço válido.")
+            return
+
+        print("O sexo:")
         sexo = input("")
+        print("O CRM:")
+        crm = input("")
+        print("Informe uma senha para o médico:")
+        senha = input("")
         print("Deseja salvar as informações? Digite: S para sim e N para não.")
         salvar = input("").upper()
         if salvar == "S":
@@ -212,10 +187,10 @@ def cadastrarMedicos():
                 "nome": nome,
                 "cpf": cpf,
                 "rg": rg,
-                "crm": crm,
                 "telefone": telefone,
                 "endereco": endereco,
                 "sexo": sexo,
+                "crm": crm,
                 "senha": senha
             })
             print(medicos)
@@ -228,27 +203,39 @@ def cadastrarPacientes():
     print("Você quer cadastrar um paciente? Digite: S para sim e N para não.")
     resposta = input("").upper()
     if resposta == "S":
-        print("Forneça o nome do paciente:")
+        print("Forneça o nome do paciente (somente letras):")
         nome = input("")
-        print("O endereço do paciente:")
-        endereco = input("")
-        print("O telefone do paciente:")
-        telefone = input("")
-        if not validar_telefone(telefone):
-            print("Telefone inválido. Por favor, insira um telefone válido.")
+        if not validar_nome(nome):
+            print("Nome inválido. Por favor, insira um nome válido.")
             return
-        
-        print("O CPF do paciente:")
+
+        print("O CPF (11 dígitos numéricos):")
         cpf = input("")
         if not validar_cpf(cpf):
             print("CPF inválido. Por favor, insira um CPF válido.")
             return
-        
-        print("Qual o RG do paciente?")
+
+        print("O RG (9 dígitos numéricos):")
         rg = input("")
-        print("O sexo do paciente:")
+        if not validar_rg(rg):
+            print("RG inválido. Por favor, insira um RG válido.")
+            return
+
+        print("O telefone (10 ou 11 dígitos numéricos):")
+        telefone = input("")
+        if not validar_telefone(telefone):
+            print("Telefone inválido. Por favor, insira um telefone válido.")
+            return
+
+        print("O endereço (letras, números e caracteres especiais - espaço, vírgula, ponto e hífen):")
+        endereco = input("")
+        if not validar_endereco(endereco):
+            print("Endereço inválido. Por favor, insira um endereço válido.")
+            return
+
+        print("O sexo:")
         sexo = input("")
-        print("Informe o convênio do paciente:")
+        print("O convênio do paciente:")
         convenio = input("")
         print("Deseja salvar as informações? Digite: S para sim e N para não.")
         salvar = input("").upper()
@@ -256,10 +243,10 @@ def cadastrarPacientes():
             print("Sucesso!")
             pacis.append({
                 "nome": nome,
-                "endereco": endereco,
-                "telefone": telefone,
                 "cpf": cpf,
                 "rg": rg,
+                "telefone": telefone,
+                "endereco": endereco,
                 "sexo": sexo,
                 "convenio": convenio
             })
@@ -275,20 +262,24 @@ def cadastrarConvenios():
     if resposta == "S":
         print("Forneça o nome do convênio:")
         nome = input("")
-        print("O telefone para contato:")
+        print("O telefone para contato (10 ou 11 dígitos numéricos):")
         telefone = input("")
         if not validar_telefone(telefone):
             print("Telefone inválido. Por favor, insira um telefone válido.")
             return
-        
-        print("O endereço do convênio:")
+
+        print("O endereço (letras, números e caracteres especiais - espaço, vírgula, ponto e hífen):")
         endereco = input("")
-        print("O CNPJ do convênio:")
+        if not validar_endereco(endereco):
+            print("Endereço inválido. Por favor, insira um endereço válido.")
+            return
+
+        print("O CNPJ (14 dígitos numéricos):")
         cnpj = input("")
-        if not validar_cpf(cnpj):
+        if not validar_cnpj(cnpj):
             print("CNPJ inválido. Por favor, insira um CNPJ válido.")
             return
-        
+
         print("Informe os planos do convênio:")
         planos = input("")
         print("Deseja salvar as informações? Digite: S para sim e N para não.")
