@@ -139,6 +139,11 @@ def validar_descricao(descricao):
 def validar_rg(rg):
     return bool(re.match(r'^\d{9}$', rg))
 
+def validar_crm(crm):
+    return bool(re.match("^[A-Z]{2}-\d{1,7}$", crm))
+
+
+
 def cadastrarMedicos():
     print("Você quer cadastrar um médico? Digite: S para sim e N para não.")
     resposta = input("").upper()
@@ -175,7 +180,7 @@ def cadastrarMedicos():
 
         print("O sexo:")
         sexo = input("")
-        print("O CRM:")
+        print("O CRM: ( Até 7 dígitos)")
         crm = input("")
         print("Informe uma senha para o médico:")
         senha = input("")
@@ -300,7 +305,7 @@ def cadastrarConvenios():
         print("Operação cancelada!")
 
 def buscarMedicos():
-    print("Informe o nome ou CRM do médico:")
+    print("Informe o nome ou CRM do médico que deseja buscar:")
     busm = input("")
     resultados = [medico for medico in medicos if busm.lower() == medico.get('nome', '').lower() or busm == medico.get('crm', '')]
     if resultados:
@@ -310,7 +315,7 @@ def buscarMedicos():
         print("Nenhum médico encontrado.")
 
 def buscarPacientes():
-    print("Informe o nome ou CPF do paciente:")
+    print("Informe o nome ou CPF do paciente que deseja buscar:")
     busp = input("")
     resultados = [paciente for paciente in pacis if busp.lower() == paciente.get('nome', '').lower() or busp == paciente.get('cpf', '')]
     if resultados:
@@ -320,7 +325,7 @@ def buscarPacientes():
         print("Nenhum paciente encontrado.")
 
 def buscarConvenios():
-    print("Informe o nome ou CNPJ do convênio:")
+    print("Informe o nome ou CNPJ do convênio que deseja buscar:")
     busc = input("")
     resultados = [convenio for convenio in convenios if busc.lower() == convenio.get('nome', '').lower() or busc == convenio.get('cnpj', '')]
     if resultados:
@@ -331,7 +336,7 @@ def buscarConvenios():
 
 def alterarMedicos():
   
-  print("Informe o CRM do médico a ser alterado")
+  print("Informe o CRM do médico que deseja alterar:")
   crm = input("")
   medico = next((medico for medico in medicos if medico['crm'] == crm), None)
   if medico:
@@ -360,7 +365,7 @@ def alterarMedicos():
 
 def alterarPacientes():
 
-    print("Informe o CPF do paciente a ser alterado")
+    print("Informe o CPF do paciente que deseja alterar:")
     cpf = input("")
     paciente = next((paciente for paciente in pacis if paciente['cpf'] == cpf), None)
     if paciente:
@@ -392,9 +397,9 @@ def validar_data(data_str):
         return False
     
 def marcarCompromisso():
-    print("Você deseja marcar um compromisso? Digite: S para sim E N para não.")
+    print("Você deseja marcar um compromisso? Digite: S para sim e N para não.")
     com = input("")
-    if com.lower() == "S":
+    if com.upper() == "S":
         data = input("Informe a data do compromisso (formato DD/MM/AAAA): ")
         if not validar_data(data):
             print("Data inválida. Encerrando o programa.")
@@ -418,7 +423,7 @@ def marcarCompromisso():
 def marcarConsulta():
     print("Você quer marcar uma consulta? (sim/não)")
     mc = input("")
-    if mc.lower() == "sim":
+    if mc.upper() == "sim":
         nm = input("Informe o nome do médico: ")
         mencontrado = next((medico for medico in medicos if medico['nome'] == nm), None)
         if mencontrado:
@@ -562,4 +567,4 @@ while a:
            a = False
         
     case _:
-           print("Escolha uma opção válida")     
+           print("Escolha uma opção válida")  
