@@ -4,12 +4,12 @@ import re
 medicos = [
     {
         "nome": "Adalberto",
-        "cpf": "12345678900",
+        "cpf": "11122233344",
         "rg": "MG123456",
         "crm": "CRM1234",
         "telefone": "(88) 99999-1234",
         "endereco": "Rua A, 123, Belo Horizonte",
-        "sexo": "Masculino",
+        "sexo": "Feminino",
         "senha": "senha123"
     },
     {
@@ -26,7 +26,7 @@ medicos = [
 pacis = [
     {
         "nome": "Ana Luiza",
-        "cpf": "11122233344",
+        "cpf": "55566677788",
         "rg": "MG111222",
         "telefone": "(31) 88888-1111",
         "endereco": "Rua C, 789, Belo Horizonte",
@@ -34,8 +34,8 @@ pacis = [
         "convenio": "ConvenioX"
     },
     {
-        "nome": "Duda Gomes",
-        "cpf": "55566677788",
+        "nome": "Eduarda",
+        "cpf": "11122233344",
         "rg": "SP555666",
         "telefone": "(11) 88888-2222",
         "endereco": "Avenida D, 101, São Paulo",
@@ -71,7 +71,7 @@ consultas = [
     },
         {
             
-        "medico": "Dr. Adalberto",
+        "medico": "Dr. Ray",
         "paciente":"Sara V.",
         "data" : "16/09/2024",
         "hora inicial" : "1:00",
@@ -80,7 +80,7 @@ consultas = [
     },
         {
 
-        "medico": "Dr. Adalberto",
+        "medico": "Dr. Sara Vitória",
         "paciente":"Sara V.",
         "data" : "16/09/2026",
         "hora inicial" : "2:00",
@@ -103,6 +103,8 @@ compromissos = [
         "descrição": "Treinamento de software"
     }
 ]
+
+
 def validar_nome(nome):
     return bool(re.match("^[a-zA-ZÀ-ú]+( [a-zA-ZÀ-ú]+)*$", nome))
 
@@ -113,7 +115,6 @@ def validar_data(data_str):
     except ValueError:
         return False
     
-
 def validar_horario(horario_str):
     try:
         datetime.strptime(horario_str, '%H:%M')
@@ -567,4 +568,4 @@ while a:
            a = False
         
     case _:
-           print("Escolha uma opção válida")  
+           print("Escolha uma opção válida")     
