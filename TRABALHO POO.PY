@@ -393,13 +393,6 @@ def alterarPacientes():
         print("Dados do paciente atualizados.")
     else:
         print("Paciente não encontrado.")
-
-def validar_data(data_str):
-    try:
-        datetime.strptime(data_str, '%d/%m/%Y')
-        return True
-    except ValueError:
-        return False
     
 def marcarCompromisso():
     print("Você deseja marcar um compromisso? Digite: S para sim e N para não.")
@@ -572,4 +565,4 @@ while a:
            a = False
         
     case _:
-           print("Escolha uma opção válida")     
+           print("Escolha uma opção válida")
