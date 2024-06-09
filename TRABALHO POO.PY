@@ -144,7 +144,6 @@ def validar_crm(crm):
     return bool(re.match("^[A-Z]{2}-\d{1,7}$", crm))
 
 
-
 def cadastrarMedicos():
     print("Você quer cadastrar um médico? Digite: S para sim e N para não.")
     resposta = input("").upper()
@@ -565,4 +564,4 @@ while a:
            a = False
         
     case _:
-           print("Escolha uma opção válida")
+           print("Escolha uma opção válida")  
